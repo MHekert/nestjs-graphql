@@ -93,7 +93,7 @@ query getProfile($username: String!, $limit: Int!) {
 
 Example response for this query:
 
-```graphql
+```json
 {
   "data": {
     "profile": {
