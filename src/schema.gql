@@ -1,0 +1,87 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Post {
+  id: ID!
+  profile: Profile!
+  title: String!
+  text: String!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+}
+
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+type PostEdge {
+  cursor: String!
+  node: Post!
+}
+
+type PaginatedPosts {
+  edges: [PostEdge!]
+  nodes: [Post!]
+  totalCount: Int!
+  hasNextPage: Boolean!
+}
+
+type Profile {
+  username: ID!
+  bio: String
+  user: User!
+  posts(limit: Int = 20, cursor: String, order: OrderEnum = DESC): PaginatedPosts!
+}
+
+enum OrderEnum {
+  ASC
+  DESC
+}
+
+type User {
+  username: String!
+  profile: Profile
+}
+
+type Auth {
+  accessToken: String!
+}
+
+type Query {
+  me: User!
+  profile(username: String!): Profile
+  posts(author: String, limit: Int = 20, cursor: String, order: OrderEnum = DESC): PaginatedPosts!
+  post(id: ID!): Post!
+  signIn(authInput: AuthInput!): Auth!
+}
+
+input AuthInput {
+  username: String!
+  password: String!
+}
+
+type Mutation {
+  upsertProfile(upsertProfileInput: UpsertProfileInput!): Profile!
+  createPost(createPostInput: CreatePostInput!): Post!
+  updatePost(updatePostInput: UpdatePostInput!): Post!
+  removePost(id: ID!): String!
+  signUp(authInput: AuthInput!): Auth!
+  changePassword(authInput: AuthInput!): Boolean!
+}
+
+input UpsertProfileInput {
+  bio: String
+}
+
+input CreatePostInput {
+  title: String!
+  text: String!
+}
+
+input UpdatePostInput {
+  title: String
+  text: String
+  id: ID!
+}
